@@ -17,6 +17,7 @@
 #include "znc/IRCNetwork.h"
 #include "znc/Modules.h"
 #include "time.h"
+#include "sys/wait.h"
 
 using std::map;
 using std::string;
@@ -188,7 +189,9 @@ class CNotifoMod : public CModule
 				/* and start executing pidgin..or w/e you want*/
 			}
 			else /* parent executes this */
-			{  }
+			{ 
+                                wait(NULL);
+                        }
 			return true;  
 		}
 
@@ -614,13 +617,15 @@ class CNotifoMod : public CModule
 				CString msg = "From " + nick.GetNick();
 				msg += ": " + message;
 
-				bool sent = send_message(msg, title, nick.GetNick());
+				/*bool sent = send_message(msg, title, nick.GetNick());*/
+				send_message(msg, title, nick.GetNick());
 
-				if (sent) {
+			    /**    if (sent) {
 					PutIRC("PRIVMSG " + nick.GetNick() + " : [znc] User not connected. Notification message sent.");
 				} else {
 					PutIRC("PRIVMSG " + nick.GetNick() + " : [znc] User not connected. Notification message failed to send.");
 				}
+                            */
 			}
 
 			return CONTINUE;
